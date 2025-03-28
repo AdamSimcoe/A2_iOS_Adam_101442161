@@ -15,10 +15,24 @@ struct ProductMainView: View {
         sortDescriptors: [NSSortDescriptor(keyPath: \Product.productName, ascending: true)]
     ) var products: FetchedResults<Product>
     
+    @State private var currentIndex = 0
+    @State private var searchText = ""
+    
     var body: some View {
         
         VStack {
             
+        }
+    }
+    
+    var filteredProducts: [Product] {
+        
+        if searchText.isEmpty {
+            return Array(products)
+        } else {
+            return products.filter {
+                ($0.productName?.localizedCaseInsensitiveContains(searchText) ?? false) || ($0.productDescription?.localizedCaseInsensitiveContains(searchText) ?? false)
+            }
         }
     }
 }
