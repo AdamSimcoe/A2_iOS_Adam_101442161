@@ -9,4 +9,16 @@ import SwiftUI
 
 struct ProductMainView: View {
     
+    @Environment(\.managedObjectContext) var context
+    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Product.productName, ascending: true)]
+    ) var products: FetchedResults<Product>
+    
+    var body: some View {
+        
+        VStack {
+            
+        }
+    }
 }
