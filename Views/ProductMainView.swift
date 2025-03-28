@@ -26,12 +26,17 @@ struct ProductMainView: View {
                 let product = filteredProducts[currentIndex]
                 
                 Text(product.productName ?? "Product name unavailable")
+                    .font(.title)
+                    .padding(.top)
                 
                 Text(product.productDescription ?? "Product description unavailable")
+                    .padding(.vertical, 2)
                 
                 Text("Price: $\(product.productPrice, specifier: "%.2f")")
+                    .padding(.vertical, 2)
                 
                 Text("Provider: \(product.productProvider ?? "Provider unavailable")")
+                    .padding(.bottom)
                 
                 HStack {
                     
@@ -42,6 +47,7 @@ struct ProductMainView: View {
                         }
                     }
                     .disabled(currentIndex == 0)
+                    .padding(.horizontal)
                     
                     Button("Next Product") {
                         
@@ -50,13 +56,20 @@ struct ProductMainView: View {
                         }
                     }
                     .disabled(currentIndex == filteredProducts.count - 1)
+                    .padding(.horizontal)
                 }
+                .padding(.bottom)
+                
             } else {
                 Text("No matching products could be found.")
+                    .padding()
             }
             
             TextField("Search Product List by name or description", text: $searchText)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
         }
+        .padding()
     }
     
     var filteredProducts: [Product] {
