@@ -13,8 +13,11 @@ struct A2_iOS_Adam_101442161App: App {
 
     var body: some Scene {
         WindowGroup {
-           ProductMainView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            NavigationView {
+                ProductMainView()
+            }
+            
+            .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

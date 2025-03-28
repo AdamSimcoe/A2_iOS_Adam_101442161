@@ -68,6 +68,14 @@ struct ProductMainView: View {
             TextField("Search Product List by name or description", text: $searchText)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+            
+            NavigationLink("View All Products", destination: ProductListView())
+                .padding(.top)
+            
+            /*
+            NavigationLink("Add a New Product", destination: AddProductView())
+                .padding(.bottom)
+            */
         }
         .padding()
     }
