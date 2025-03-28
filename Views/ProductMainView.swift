@@ -30,8 +30,11 @@ struct ProductMainView: View {
                 // Check for if any products match current search criteria
                 if !filteredProducts.isEmpty {
                     
+                    // Clamp index in case filtered list shrinks
+                    let safeIndex = min(currentIndex, max(filteredProducts.count - 1, 0))
+                    
                     // Gets product at current index value
-                    let product = filteredProducts[currentIndex]
+                    let product = filteredProducts[safeIndex]
                     
                     VStack(alignment: .leading, spacing: 10) {
                         
@@ -124,6 +127,10 @@ struct ProductMainView: View {
                             .stroke(Color.gray.opacity(0.6), lineWidth: 2)
                     )
                     .padding(.horizontal)
+                    .onChange(of: searchText) {
+                        // Reset index when search filter updates to prevent out of bounds
+                        currentIndex = 0
+                    }
                 
                 VStack(spacing: 10) {
                     
