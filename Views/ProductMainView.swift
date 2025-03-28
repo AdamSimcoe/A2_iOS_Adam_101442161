@@ -22,6 +22,40 @@ struct ProductMainView: View {
         
         VStack {
             
+            if !filteredProducts.isEmpty {
+                let product = filteredProducts[currentIndex]
+                
+                Text(product.productName ?? "Product name unavailable")
+                
+                Text(product.productDescription ?? "Product description unavailable")
+                
+                Text("Price: $\(product.productPrice, specifier: "%.2f")")
+                
+                Text("Provider: \(product.productProvider ?? "Provider unavailable")")
+                
+                HStack {
+                    
+                    Button("Previous Product") {
+                        
+                        if currentIndex > 0 {
+                            currentIndex -= 1
+                        }
+                    }
+                    .disabled(currentIndex == 0)
+                    
+                    Button("Next Product") {
+                        
+                        if currentIndex < filteredProducts.count - 1 {
+                            currentIndex += 1
+                        }
+                    }
+                    .disabled(currentIndex == filteredProducts.count - 1)
+                }
+            } else {
+                Text("No matching products could be found.")
+            }
+            
+            TextField("Search Product List by name or description", text: $searchText)
         }
     }
     
