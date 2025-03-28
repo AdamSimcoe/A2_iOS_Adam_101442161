@@ -23,79 +23,137 @@ struct ProductMainView: View {
     
     var body: some View {
         
-        VStack {
+        ScrollView {
             
-            // Check for if any products match current search criteria
-            if !filteredProducts.isEmpty {
+            VStack(spacing: 20) {
                 
-                // Gets product at current index value
-                let product = filteredProducts[currentIndex]
-                
-                // Product name text display
-                Text(product.productName ?? "Product name unavailable")
-                    .font(.title)
-                    .padding(.top)
-                
-                // Product description text display
-                Text(product.productDescription ?? "Product description unavailable")
-                    .padding(.vertical, 2)
-                
-                // Product price text display
-                Text("Price: $\(product.productPrice, specifier: "%.2f")")
-                    .padding(.vertical, 2)
-                
-                // Product provider text display
-                Text("Provider: \(product.productProvider ?? "Provider unavailable")")
-                    .padding(.bottom)
-                
-                HStack {
+                // Check for if any products match current search criteria
+                if !filteredProducts.isEmpty {
                     
-                    // Previous product button
-                    Button("Previous Product") {
-                        
-                        // Moves to previous product if it is not at the beginning
-                        if currentIndex > 0 {
-                            currentIndex -= 1
-                        }
-                    }
-                    // Disables button if already at the beginning
-                    .disabled(currentIndex == 0)
-                    .padding(.horizontal)
+                    // Gets product at current index value
+                    let product = filteredProducts[currentIndex]
                     
-                    // Next product button
-                    Button("Next Product") {
+                    VStack(alignment: .leading, spacing: 10) {
                         
-                        // Moves to next product if it is not at the end
-                        if currentIndex < filteredProducts.count - 1 {
-                            currentIndex += 1
-                        }
+                        // Product name text display
+                        Text(product.productName ?? "Product name unavailable")
+                            .font(.title)
+                            .padding(.top)
+                        
+                        // Product description text display
+                        Text(product.productDescription ?? "Product description unavailable")
+                            .padding(.vertical, 2)
+                        
+                        // Product price text display
+                        Text("Price: $\(product.productPrice, specifier: "%.2f")")
+                            .padding(.vertical, 2)
+                        
+                        // Product provider text display
+                        Text("Provider: \(product.productProvider ?? "Provider unavailable")")
+                            .padding(.bottom)
                     }
-                    // Disables button if already at the end
-                    .disabled(currentIndex == filteredProducts.count - 1)
-                    .padding(.horizontal)
-                }
-                .padding(.bottom)
-                
-            } else {
-                // Text display when there are no matching products in the filtered list
-                Text("No matching products could be found.")
                     .padding()
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
+                    .background(
+                        RoundedRectangle(cornerRadius: 15)
+                            .fill(Color.blue.opacity(0.6))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(Color.blue.opacity(1.0), lineWidth: 2)
+                            )
+                    )
+                    .padding(.horizontal)
+                    
+                    // Navigation Buttons
+                    HStack(spacing: 30) {
+                        
+                        // Previous product button
+                        Button(action: {
+                            
+                            // Moves to previous product if it is not at the beginning
+                            if currentIndex > 0 {
+                                currentIndex -= 1
+                            }
+                        }) {
+                            Text("Previous Product")
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .background(Color.blue.opacity(currentIndex == 0 ? 0.2 : 1.0))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        // Disables button if already at the beginning
+                        .disabled(currentIndex == 0)
+                        
+                        // Next product button
+                        Button(action: {
+                            
+                            // Moves to next product if it is not at the end
+                            if currentIndex < filteredProducts.count - 1 {
+                                currentIndex += 1
+                            }
+                        }) {
+                            Text("Next Product")
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .background(Color.blue.opacity(currentIndex == filteredProducts.count - 1 ? 0.2 : 1.0))
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                        // Disables button if already at the end
+                        .disabled(currentIndex == filteredProducts.count - 1)
+                    }
+                    .padding(.top, 10)
+                    
+                } else {
+                    // Text display when there are no matching products in the filtered list
+                    Text("No matching products could be found.")
+                        .foregroundColor(.red)
+                        .multilineTextAlignment(.center)
+                        .padding()
+                }
+                
+                // Input field for searching by product name or product description
+                TextField("Search Product List by name or description", text: $searchText)
+                    .padding()
+                    .frame(height: 50)
+                    .background(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(Color.gray.opacity(0.6), lineWidth: 2)
+                    )
+                    .padding(.horizontal)
+                
+                VStack(spacing: 10) {
+                    
+                    // Navigation Link to the ProductListView
+                    NavigationLink(destination: ProductListView()) {
+                        
+                        Text("View All Products")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.green)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    
+                    // Navigation Link to the AddProductView
+                    NavigationLink(destination: AddProductView()) {
+                        
+                        Text("Add a Product")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.orange)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(.horizontal)
             }
-            
-            // Input field for searching by product name or product description
-            TextField("Search Product List by name or description", text: $searchText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            // Navigation Link to the ProductListView
-            NavigationLink("View All Products", destination: ProductListView())
-                .padding(.top)
-            
-            // Navigation Link to the AddProductView
-            NavigationLink("Add a New Product", destination: AddProductView())
-                .padding(.bottom)
+            .padding(.vertical)
         }
-        .padding()
+        // Navigation bar title
+        .navigationTitle("Product Display")
     }
     
     // Returns filtered list of products based on user input
