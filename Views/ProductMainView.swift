@@ -72,10 +72,8 @@ struct ProductMainView: View {
             NavigationLink("View All Products", destination: ProductListView())
                 .padding(.top)
             
-            /*
             NavigationLink("Add a New Product", destination: AddProductView())
                 .padding(.bottom)
-            */
         }
         .padding()
     }

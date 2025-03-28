@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct ProductListView: View {
     
     @FetchRequest(
