@@ -8,26 +8,36 @@
 import CoreData
 
 struct PersistenceController {
+    // Shared persistence instance for throughout the app
     static let shared = PersistenceController()
     
+    // Core Data container for data storage
     let container: NSPersistentContainer
     
+    // Initializes container and seeds data if none already exist
     init() {
         
+        // Initializes container to use Core Data model
         container = NSPersistentContainer(name: "A2_iOS_Adam_101442161")
         
+        // Loads local Core Data database file
         container.loadPersistentStores { description, error in
             if let error = error {
+                // Fatal error check if error occurs during loading
                 fatalError("Core Data has run into an error during loading: \(error)")
             }
         }
         
+        // Accesses view context
         let context = container.viewContext
         
+        // Fetch request to check if data already exists
         let request: NSFetchRequest<Product> = Product.fetchRequest()
         
+        // If no data already exists, seed sample product data
         if (try? context.count(for: request)) == 0 {
             
+            // Sample product data
             let products: [(String, String, Double, String)] = [
                 ("Samsung 55\" 4K Smart TV", "UHD 4K Smart TV with HDR", 549.99, "Samsung"),
                 ("Samsung 27\" Curved Monitor", "Full HD curved LED monitor with ultra-slim design", 179.99, "Samsung"),
@@ -41,10 +51,13 @@ struct PersistenceController {
                 ("Google Pixel 8", "Smartphone with Tensor G3 chip and Android 14", 899.00, "Google")
             ]
             
+            // Loop through product data and create new product entities
             for productData in products {
                 
+                // Initialize new product using context
                 let product = Product(context: context)
                 
+                // Assign product attribute values using sample product data
                 product.id = UUID()
                 product.productName = productData.0
                 product.productDescription = productData.1
@@ -52,6 +65,7 @@ struct PersistenceController {
                 product.productProvider = productData.3
             }
             
+            // save all sample product data to db
             try? context.save()
         }
     }
