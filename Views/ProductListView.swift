@@ -34,6 +34,16 @@ struct ProductListView: View {
                         Text(product.productDescription ?? "Product description unavailable")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
+                        
+                        // Product price text display
+                        Text("Price: $\(product.productPrice, specifier: "%.2f")")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        
+                        // Product provider text display
+                        Text("Provider: \(product.productProvider ?? "Product provider unavailable")")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -52,7 +62,7 @@ struct ProductListView: View {
             .padding(.top)
         }
         // Navigation bar title
-        .navigationTitle("All Products List")
+        .navigationTitle("Products List")
     }
 }
 
