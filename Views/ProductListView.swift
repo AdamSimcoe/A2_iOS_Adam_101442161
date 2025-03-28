@@ -16,22 +16,41 @@ struct ProductListView: View {
     
     var body: some View {
         
-        // List display of all products, using ID as the identifier
-        List(products, id: \.id) { product in
+        ScrollView {
             
-            // Vertical stack, aligns product name/description to the left
-            VStack(alignment: .leading) {
+            VStack (spacing: 15) {
                 
-                // Product name text display
-                Text(product.productName ?? "Product name unavailable")
-                    .font(.headline)
-                
-                // Product description text display
-                Text(product.productDescription ?? "Product description unavailable")
-                    .font(.subheadline)
+                // Loop to list all products using id as identifier
+                ForEach(products, id: \.id) { product in
+                    
+                    VStack(alignment: .leading, spacing: 6) {
+                        
+                        // Product name text display
+                        Text(product.productName ?? "Product name unavailable")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+                        
+                        // Product description text display
+                        Text(product.productDescription ?? "Product description unavailable")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.green.opacity(0.1))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(Color.green.opacity(0.4), lineWidth: 1.5)
+                            )
+                    )
+                    .shadow(color: Color.green.opacity(0.1), radius: 2, x: 0, y: 1)
+                }
             }
+            .padding(.top)
         }
-        
         // Navigation bar title
         .navigationTitle("All Products List")
     }

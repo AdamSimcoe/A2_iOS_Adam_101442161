@@ -52,6 +52,7 @@ struct ProductMainView: View {
                         Text("Provider: \(product.productProvider ?? "Provider unavailable")")
                             .padding(.bottom)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                     .frame(maxWidth: UIScreen.main.bounds.width * 0.9)
                     .background(
